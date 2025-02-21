@@ -20,7 +20,8 @@ body {
   min-width: 100vw;
   min-height: 100vh;
   margin: 0;
-  background: blanchedalmond;
+  background: rgb(181,174,238);
+  background: radial-gradient(circle, rgba(181,174,238,0.8855917366946778) 16%, rgba(148,187,233,1) 67%);
 }
 
 main {
@@ -47,7 +48,7 @@ main:has(.back-link) {
 
 .image-info .list {
   display: flex;
-  flex-wrap: nowrap; /* Дозволяє елементам переходити на новий рядок */
+  flex-wrap: nowrap;
   gap: 8px;
   justify-content: space-between;
 }
@@ -78,4 +79,26 @@ main:has(.back-link) {
   min-width: 125px;
   height: 40px;
   white-space: nowrap;
+}
+.loader {
+  display: none;
+  width: 50px;
+  height: 50px;
+  border: 5px solid #ccc;
+  border-top-color: #1e90ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }

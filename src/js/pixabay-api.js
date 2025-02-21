@@ -1,10 +1,11 @@
 import axios from 'axios';
 import iziToast from 'izitoast';
-import 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
+
 const API_KEY = '48901919-31fb8722d9302fb6f0fb2505f';
 const BASE_URL = 'https://pixabay.com/api/';
 
-export async function fetchImages(query, page, perPage) {
+export async function fetchImages(query, page, perPage = 15) {
   try {
     const response = await axios.get(BASE_URL, {
       params: {
@@ -13,10 +14,14 @@ export async function fetchImages(query, page, perPage) {
         image_type: 'photo',
         orientation: 'horizontal',
         safesearch: true,
-        page: page,
+        page,
         per_page: perPage,
       },
     });
+
+    if (response.status !== 200 || !response.data.hits.length) {
+      throw new Error('No images found.');
+    }
 
     return response.data;
   } catch (error) {

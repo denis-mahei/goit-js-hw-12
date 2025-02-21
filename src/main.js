@@ -2,6 +2,7 @@ import { fetchImages } from './js/pixabay-api.js';
 import { renderImages, clearGallery } from './js/render-functions.js';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const searchForm = document.querySelector('.search-form');
@@ -14,6 +15,8 @@ let page = 1;
 let query = '';
 let totalHits = 0;
 let loadMoreBtn = null;
+
+let lightbox = new SimpleLightbox('.gallery a');
 
 searchForm.addEventListener('submit', async event => {
   event.preventDefault();
@@ -43,11 +46,11 @@ searchForm.addEventListener('submit', async event => {
 
   try {
     const data = await fetchImages(query, page, perPage);
-    loader.style.display = 'none';
 
     if (data.hits.length === 0) {
+      loader.style.display = 'none';
       iziToast.info({
-        message: 'No images found. Try another search!',
+        message: "We're sorry, but no images match your search.",
         position: 'topRight',
         backgroundColor: '#ef4040',
         messageColor: '#fafafb',
@@ -59,6 +62,9 @@ searchForm.addEventListener('submit', async event => {
 
     totalHits = data.totalHits;
     renderImages(data.hits);
+    lightbox.refresh();
+
+    loader.style.display = 'none';
 
     if (totalHits > page * perPage) {
       createLoadMoreButton();
@@ -82,9 +88,14 @@ function createLoadMoreButton() {
   loadMoreBtn.addEventListener('click', async () => {
     page += 1;
 
+    loader.style.display = 'block';
+
     try {
       const data = await fetchImages(query, page, perPage);
       renderImages(data.hits);
+      lightbox.refresh();
+
+      loader.style.display = 'none';
 
       scrollPage();
 
@@ -101,9 +112,10 @@ function createLoadMoreButton() {
         });
       }
     } catch (error) {
+      loader.style.display = 'none';
       iziToast.error({
         title: 'Error',
-        message: 'Please enter a search term!',
+        message: 'Something went wrong!',
         position: 'topRight',
         backgroundColor: '#ef4040',
         messageColor: '#fafafb',
@@ -113,9 +125,10 @@ function createLoadMoreButton() {
 }
 
 function scrollPage() {
-  const cardHeight = document
-    .querySelector('.image-card')
-    .getBoundingClientRect().height;
+  const card = document.querySelector('.image-card');
+  if (!card) return;
+
+  const cardHeight = card.getBoundingClientRect().height;
   window.scrollBy({
     top: cardHeight * 3,
     behavior: 'smooth',
