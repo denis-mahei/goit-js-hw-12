@@ -1,0 +1,18 @@
+.iziToast {
+  margin-top: 26px !important;
+  margin-right: 26px !important;
+  max-width: 432px !important;
+  max-height: 88px !important;
+}
+.iziToast-message {
+  font-family: var(--font-family), sans-serif;
+  font-weight: 400;
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  letter-spacing: 0.03em;
+  color: #fafafb;
+}
+.iziToast-close {
+  filter: brightness(0) invert(1);
+}
+
