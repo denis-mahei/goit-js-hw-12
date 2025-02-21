@@ -3,7 +3,10 @@
   margin-right: 26px !important;
   max-width: 432px !important;
   max-height: 88px !important;
+  border-radius: 10px !important;
 }
+
+
 .iziToast-message {
   font-family: var(--font-family), sans-serif;
   font-weight: 400;
