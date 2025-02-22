@@ -19,10 +19,6 @@ export async function fetchImages(query, page, perPage = 15) {
       },
     });
 
-    if (response.status !== 200 || !response.data.hits.length) {
-      throw new Error('No images found.');
-    }
-
     return response.data;
   } catch (error) {
     iziToast.error({
@@ -31,6 +27,5 @@ export async function fetchImages(query, page, perPage = 15) {
       iconUrl:
         'https://raw.githubusercontent.com/denis-cactus/goit-js-hw-12/refs/heads/gh-pages/error.svg',
     });
-    throw error;
   }
 }

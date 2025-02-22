@@ -2,8 +2,6 @@ import { fetchImages } from './js/pixabay-api.js';
 import { renderImages, clearGallery } from './js/render-functions.js';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const searchForm = document.querySelector('.search-form');
 const searchInput = document.querySelector('.search-input');
@@ -15,8 +13,6 @@ let page = 1;
 let query = '';
 let totalHits = 0;
 let loadMoreBtn = null;
-
-let lightbox = new SimpleLightbox('.gallery a');
 
 searchForm.addEventListener('submit', async event => {
   event.preventDefault();
@@ -46,7 +42,6 @@ searchForm.addEventListener('submit', async event => {
 
   try {
     const data = await fetchImages(query, page, perPage);
-
     if (data.hits.length === 0) {
       loader.style.display = 'none';
       iziToast.info({
@@ -62,20 +57,15 @@ searchForm.addEventListener('submit', async event => {
 
     totalHits = data.totalHits;
     renderImages(data.hits);
-    lightbox.refresh();
 
     loader.style.display = 'none';
 
     if (totalHits > page * perPage) {
       createLoadMoreButton();
     }
+    lighbox.refresh();
   } catch (error) {
     loader.style.display = 'none';
-    iziToast.error({
-      title: 'Error',
-      message: 'Something went wrong!',
-      position: 'topRight',
-    });
   }
 });
 
@@ -83,7 +73,8 @@ function createLoadMoreButton() {
   loadMoreBtn = document.createElement('button');
   loadMoreBtn.textContent = 'Load more';
   loadMoreBtn.classList.add('load-more-btn');
-  document.body.append(loadMoreBtn);
+
+  gallery.insertAdjacentElement('afterend', loadMoreBtn);
 
   loadMoreBtn.addEventListener('click', async () => {
     page += 1;
@@ -92,11 +83,10 @@ function createLoadMoreButton() {
 
     try {
       const data = await fetchImages(query, page, perPage);
+
       renderImages(data.hits);
-      lightbox.refresh();
 
       loader.style.display = 'none';
-
       scrollPage();
 
       if (page * perPage >= totalHits) {
