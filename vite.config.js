@@ -7,6 +7,7 @@ import SortCss from 'postcss-sort-media-queries';
 export default defineConfig(({ command }) => {
   return {
     define: {
+      'process.env.VITE_API_KEY': JSON.stringify(process.env.VITE_API_KEY),
       [command === 'serve' ? 'global' : '_global']: {},
     },
     root: 'src',
