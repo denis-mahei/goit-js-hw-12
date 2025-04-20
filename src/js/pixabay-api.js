@@ -2,8 +2,8 @@ import axios from 'axios';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-const API_KEY = import.meta.env.VITE_API_KEY;
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const API_KEY = '48901919-31fb8722d9302fb6f0fb2505f';
+const BASE_URL = 'https://pixabay.com/api/';
 
 export async function fetchImages(query, page, perPage = 15) {
   try {
